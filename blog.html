@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Young Coders AI</title>
+    <!-- Link to your main CSS file here so your global styles carry over -->
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        /* Main page theme tweaks to eliminate white spaces */
+        body {
+            background-color: #0b111e; /* Deep navy/dark background matching your header snippet */
+            color: #ffffff;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Layout & Aesthetics styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0b111e; /* Transparent blend with body */
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo a {
+            font-size: 24px;
+            font-weight: bold;
+            color: #9d81f5; /* Light purple color matching your Young Coders AI branding text */
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .logo a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 16px;
+            opacity: 0.9;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #9d81f5; /* Highlighting color on hover */
+        }
+
+        /* Core Blog Layout structures */
+        .blog-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .blog-container h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .blog-container p {
+            color: #a0aec0; /* Subdued grey-white text description */
+            margin-bottom: 40px;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .blog-card {
+            background: #141b2d; /* Slightly lighter container card box */
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .blog-card h3 {
+            color: #9d81f5; 
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        .blog-card p {
+            color: #cbd5e0;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. The Header (Matches your dark design perfectly) -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="index.html">Young Coders AI</a>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="index.html#ai-tools">AI Tools</a>
+            <a href="index.html#usages">Usages</a>
+            <a href="index.html#tutorials">Tutorials</a>
+            <a href="index.html#about">About Us</a>
+        </nav>
+    </header>
+
+    <!-- 2. The Main Blog Content Area -->
+    <main class="blog-container">
+        <h2>Latest Articles</h2>
+        <p>Explore our recent updates, coding tutorials, and AI breakdowns.</p>
+        
+        <div id="blog-posts-grid" class="blog-grid">
+            <!-- Loading fallback state -->
+            <div class="blog-card">
+                <h3>Loading Articles...</h3>
+                <p>Fetching content safely from your database engine.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 3. The Backend Connection Script -->
+    <script>
+        const API_URL = 'http://localhost:1337/api/blogs'; 
+
+        async function fetchBlogs() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                console.log(data); 
+            } catch (error) {
+                console.error('Error fetching blogs:', error);
+                document.getElementById('blog-posts-grid').innerHTML = `
+                    <div class="blog-card" style="border-left: 4px solid #ff5555;">
+                        <h3 style="color: #ff5555;">Failed to Load</h3>
+                        <p>Could not safely establish a network handshake with your database backend engine.</p>
+                    </div>`;
+            }
+        }
+
+        fetchBlogs();
+    </script>
+
+</body>
+</html>

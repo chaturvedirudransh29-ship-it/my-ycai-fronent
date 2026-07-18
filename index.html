@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Young Coders AI</title>
+    <script>// Inside the <script> tag of your index.html file
+async function fetchBlogArticles() {
+    try {
+        // Replace with your live Strapi URL once deployed, or keep localhost for local testing
+        const response = await fetch('http://localhost:1337/api/articles'); 
+        const data = await response.json();
+        
+        // This is where your code injects the data into your HTML container
+        console.log("Strapi data loaded successfully:", data);
+    } catch (error) {
+        console.error("Error fetching data from Strapi:", error);
+    }
+}
+
+// Run the function when the page loads
+window.onload = fetchBlogArticles;</script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #818cf8;
+            --accent-pink: #c084fc;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --text-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --code-bg: #090d16;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+        }
+
+        /* Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            background: linear-gradient(to right, #818cf8, var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Fix the header link colors and remove underlines */
+.nav-links a {
+    color: #ffffff !important;      /* Forces the text to stay clean white */
+    text-decoration: none;         /* Removes the purple underline completely */
+    margin-left: 24px;
+    font-size: 16px;
+    opacity: 0.9;
+    transition: color 0.2s ease;
+}
+
+/* Optional: Make them turn a nice purple ONLY when you hover over them */
+.nav-links a:hover {
+    color: #9d81f5 !important;      /* Changes to your brand purple on hover */
+    opacity: 1;
+}
+        .hero-banner {
+            width: 100%;
+            max-height: 500px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid rgba(192, 132, 252, 0.3);
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Main Content Grid */
+        main {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            color: var(--accent-pink);
+            font-size: 2rem;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+/* Style the AI tool link titles */
+.tool-link {
+    color: #9d81f5 !important;    /* Your signature brand purple */
+    text-decoration: none;        /* Removes default underline */
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+/* Add a cool hover effect */
+.tool-link:hover {
+    color: #ffffff !important;    /* Turns clean white when hovered over */
+    text-decoration: underline;   /* Optional: adds underline only on hover */
+}
+        /* Content Layouts */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #818cf8;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(79, 70, 229, 0.3);
+            color: #b4b7f8;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* Interactive Tutorial Dropdowns */
+        .tutorial-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .tutorial-details {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .tutorial-details summary {
+            padding: 1rem;
+            color: var(--accent-pink);
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tutorial-details summary:hover {
+            color: var(--primary-hover);
+        }
+
+        .tutorial-content {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+
+        .tutorial-content code {
+            font-family: 'Courier New', Courier, monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: #f472b6;
+        }
+
+        .tutorial-content pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tutorial-content pre code {
+            color: #a7f3d0;
+            background: none;
+            padding: 0;
+        }
+
+        /* Team Section Specifics */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .email-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--accent-pink);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px dashed var(--accent-pink);
+            transition: color 0.3s, border-color 0.3s;
+        }
+
+        .email-link:hover {
+            color: #818cf8;
+            border-color: #818cf8;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #0f172a;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav ul {
+                gap: 1rem;
+            }
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Young Coders AI</h1>
+        <nav class="nav-links">
+    <a href="#ai-tools">AI Tools</a>
+    <a href="#usages">Usages</a>
+    <a href="#tutorials">Tutorials</a>
+    <a href="#about">About Us</a>
+    <!-- Make sure this exact line is here before the </nav> ends! -->
+    <a href="blog.html" class="blog-btn">Go to Blog &rarr;</a>
+</nav>
+    </header>
+
+    <div class="hero-banner">
+        <img src="banner.png" alt="Young Coders AI - Empowering the Next Generation of AI Innovators">
+    </div>
+
+    <main>
+        
+        <h2 id="tools" class="section-title">The Big 5 AI Tools</h2>
+        <div class="grid-container">
+            <div class="card">
+            
+                <h3><a href="https://gemini.google.com" target="_blank" class="tool-link">Google Gemini</a></h3>
+                <p>Built for multi-modal logic. Great for looking at code blocks and cross-referencing documentation across text and media simultaneously.</p>
+            </div>
+            <div class="card">
+                <h3><a href="https://claude.ai" target="_blank" class="tool-link">Anthropic Claude</a></h3>
+                <p>The developer's favorite for complex programming logic. Excellent at understanding massive, multi-file text files and maintaining deep context.</p>
+            </div>
+            <div class="card">
+                <h3><a href="https://x.ai" target="_blank" class="tool-link">xAI Grok</a></h3>
+                <p>A fast conversational AI integrated directly into social ecosystems. Offers raw, real-time insights with a witty, distinct personality.</p>
+            </div>
+            <div class="card">
+                <h3><a href="https://chatgpt.com" target="_blank" class="tool-link">OpenAI ChatGPT</a></h3>
+    
+                <p>The ultimate all-rounder assistant. Fantastic for rapid wireframing, structural brainstorming, and writing baseline boilerplate code.</p>
+            </div>
+            <div class="card">
+                <h3><a href="https://copilot.microsoft.com" target="_blank" class="tool-link">Microsoft Copilot</a></h3>
+                <p>Seamlessly integrates right inside your IDE and workflow software. It even utilizes native design workflows like Adobe Express elements for presentation assets.</p>
+            </div>
+        </div>
+
+        <h2 id="usages" class="section-title">Practical Usages</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h3>Code Debugging</h3>
+                <p>Paste broken runtime errors into LLMs to diagnose syntax bugs or receive instant structural fixes.</p>
+            </div>
+            <div class="card">
+                <h3>Asset Mockups</h3>
+                <p>Leverage integrated tools like Copilot's image generation mechanics to sketch UI layouts instantly.</p>
+            </div>
+        </div>
+
+        <h2 id="tutorials" class="section-title">Featured Tutorials</h2>
+        <div class="tutorial-container">
+            
+            <div class="card">
+                <span class="tag">Python / Vision</span>
+                <h3>Building an Image Classifier</h3>
+                <p>Learn how to feed images to a lightweight pre-trained AI model to detect, tag, and categorize everyday objects with just a few lines of code.</p>
+                
+                <details class="tutorial-details">
+                    <summary>📁 View Complete Python Code Guide</summary>
+                    <div class="tutorial-content">
+                        <p><strong>Step 1:</strong> Setup dependencies via terminal:</p>
+                        <pre><code>pip install torch torchvision pillow</code></pre>
+                        <p><strong>Step 2:</strong> Create <code>classifier.py</code> and add the following execution block:</p>
+                        <pre><code>import torch
+import torchvision.models as models
+import torchvision.transforms as transforms
+from PIL import Image
+
+# Load ultra-fast pre-trained neural network topology
+model = models.mobilenet_v3_small(pretrained=True)
+model.eval()
+
+def analyze_file(img_path):
+    preprocess = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+    
+    img = Image.open(img_path)
+    tensor = preprocess(img).unsqueeze(0)
+    
+    with torch.no_grad():
+        raw_outputs = model(tensor)
+    
+    probs = torch.nn.functional.softmax(raw_outputs[0], dim=0)
+    return torch.topk(probs, 1)
+
+print("[LOG] Script ready for local test assets.")</code></pre>
+                    </div>
+                </details>
+            </div>
+
+            <div class="card">
+                <span class="tag">NLP / Prompts</span>
+                <h3>Creative Text Generator</h3>
+                <p>Master how to pass custom parameters to language APIs to auto-generate unique text scripts, narratives, or responsive dialogue blocks dynamically.</p>
+                
+                <details class="tutorial-details">
+                    <summary>📁 View Complete API Prompt Guide</summary>
+                    <div class="tutorial-content">
+                        <p><strong>Step 1:</strong> Install execution environment packages:</p>
+                        <pre><code>pip install google-genai</code></pre>
+                        <p><strong>Step 2:</strong> Use the standard baseline setup to pass dynamic contextual roles directly to execution endpoints:</p>
+                        <pre><code>from google import genai
+
+client = genai.Client()
+
+def generate_story(theme):
+    response = client.models.generate_content(
+        model='gemini-2.5-flash',
+        contents=f"Write a 3-sentence sci-fi story about: {theme}",
+    )
+    return response.text
+
+print(generate_story("AI taking over Class 12 accounting homework"))</code></pre>
+                    </div>
+                </details>
+            </div>
+
+            <div class="card">
+                <span class="tag">API Integration</span>
+                <h3>Building Your First API Prompt</h3>
+                <p>Learn how to connect structural web markup components straight to live artificial intelligence endpoints to create fully responsive interfaces.</p>
+                
+                <details class="tutorial-details">
+                    <summary>📁 View Web Frontend Setup Guide</summary>
+                    <div class="tutorial-content">
+                        <p><strong>Step 1:</strong> Embed a simple JavaScript event listener into your structural interactive elements:</p>
+                        <pre><code>async function callAIEndpoint(userPrompt) {
+    const payload = { prompt: userPrompt };
+    
+    // Connect standard frontend view models directly to cloud endpoints
+    const systemResponse = await fetch('https://api.yourdomain.com/v1/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    
+    const operationalData = await systemResponse.json();
+    document.getElementById('display-pane').innerText = operationalData.output;
+}</code></pre>
+                    </div>
+                </details>
+            </div>
+
+        </div>
+
+        <h2 id="about" class="section-title">About Us</h2>
+        <p style="margin-bottom: 2rem; color: #94a3b8; font-size: 1.1rem;">We are a forward-thinking group of young developers showing our generation how to turn AI from a novelty into a powerful development partner.</p>
+        
+        <div class="team-grid">
+            <div class="card">
+                <h3>Rudransh Chaturvedi</h3>
+                <p style="color: #cbd5e1; font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Class 12, Commerce</p>
+                <p>I'm a young developer passionate about making AI tools simple, intuitive, and completely accessible for everyone looking to build the future.</p>
+                <a href="mailto:chaturvedirudransh29@gmail.com" class="email-link"><p>Contact Rudransh:</p>chaturvedirudransh29@gmail.com</a>
+            </div>
+            
+            <div class="card">
+                <h3>Ashish Sharma</h3>
+                <p style="color: #cbd5e1; font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Class 12, PCM</p>
+                <p>With a strong focus on technology, logic, and mathematics, I focus deeply on the engineering and core principles behind modern AI systems.</p>
+                <a href="mailto:famash312@gmail.com" class="email-link"><p>Contact Ashish:</p>famash312@gmail.com</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Young Coders AI. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

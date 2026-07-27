@@ -1,105 +1,100 @@
-fetch('http://localhost:1337/api/about-page?populate
-      // 1. Define the API URL with your laptop's Wi-Fi IP address
+// 1. Define the API URL with your laptop's Wi-Fi IP address
 const API_URL = "http://192.168.137.1:1337/api/about-page?populate=*";
 
-// 2. Load the About Page content
+// 2. Helper function to parse Strapi Rich Text Blocks into styled HTML sub-cards
+function parseBlocksToHTML(blocks) {
+  if (!blocks) return '';
+  if (typeof blocks === 'string') return `<div class="sub-card"><p>${blocks}</p></div>`;
+  
+  if (Array.isArray(blocks)) {
+    return blocks.map(block => {
+      // Heading blocks (h1-h6)
+      if (block.type === 'heading') {
+        const level = block.level || 3;
+        const headingText = block.children ? block.children.map(c => {
+          let text = c.text || '';
+          if (c.bold) text = `<strong>${text}</strong>`;
+          if (c.italic) text = `<em>${text}</em>`;
+          return text;
+        }).join('') : '';
+        return `<div class="sub-card"><h${level}>${headingText}</h${level}></div>`;
+      }
+      
+      // Paragraph blocks
+      if (block.type === 'paragraph') {
+        const paragraphText = block.children ? block.children.map(c => {
+          let text = c.text || '';
+          if (c.bold) text = `<strong>${text}</strong>`;
+          if (c.italic) text = `<em>${text}</em>`;
+          return text;
+        }).join('') : '';
+        return `<div class="sub-card"><p>${paragraphText}</p></div>`;
+      }
+
+      // List blocks
+      if (block.type === 'list') {
+        const listTag = block.format === 'ordered' ? 'ol' : 'ul';
+        const items = block.children ? block.children.map(item => {
+          const itemText = item.children ? item.children.map(c => c.text || '').join('') : '';
+          return `<li>${itemText}</li>`;
+        }).join('') : '';
+        return `<div class="sub-card"><${listTag}>${items}</${listTag}></div>`;
+      }
+
+      return '';
+    }).join('');
+  }
+  
+  return '';
+}
+
+// 3. Main function to fetch data and render the About Page content
 async function loadAboutPage() {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) throw new Error("Network response was not ok");
 
-    const data = await response.json();
-    
-    // ... your code to render the data goes here ...
-    
+    const result = await response.json();
+    const data = result.data;
+    if (!data) return;
+
+    // Set Title and Subtitle
+    const titleEl = document.getElementById("about-title");
+    const subtitleEl = document.getElementById("about-subtitle");
+    if (titleEl) titleEl.textContent = data.title || "";
+    if (subtitleEl) subtitleEl.textContent = data.subtitle || "";
+
+    // Parse Rich Text Blocks for Story and Mission
+    const storyEl = document.getElementById("about-story");
+    const missionEl = document.getElementById("about-mission");
+    if (storyEl) storyEl.innerHTML = parseBlocksToHTML(data.story);
+    if (missionEl) missionEl.innerHTML = parseBlocksToHTML(data.mission);
+
+    // Cover Image Handling
+    const imgEl = document.getElementById("about-image");
+    if (imgEl && data.coverImage) {
+      const imgData = data.coverImage;
+      let imgUrl = "";
+
+      if (Array.isArray(imgData) && imgData.length > 0) {
+        imgUrl = imgData[0].url;
+      } else if (imgData.url) {
+        imgUrl = imgData.url;
+      }
+
+      if (imgUrl) {
+        // Prepend backend host if image URL is relative
+        if (imgUrl.startsWith("/")) {
+          imgUrl = `http://192.168.137.1:1337${imgUrl}`;
+        }
+        imgEl.src = imgUrl;
+        imgEl.style.display = "block";
+      }
+    }
   } catch (error) {
     console.error("Error fetching About page data:", error);
   }
 }
 
-// Call function on load
+// 4. Run setup when page finishes loading
 document.addEventListener("DOMContentLoaded", loadAboutPage);
-  .then(res => res.json())
-  .then(response => {
-    const data = response.data;
-    if (!data) return;
-
-    // 1. Helper function to parse Strapi Rich Text Blocks into HTML paragraphs
-   function parseBlocksToHTML(blocks) {
-  if (!blocks) return '';
-  if (typeof blocks === 'string') return `<div class="sub-card"><p>${blocks}</p></div>`;
-
-  let html = '';
-  let inSection = false;
-
-  blocks.forEach(block => {
-    // 1. Process Headings (What We Do, Why Text-Based?, Who We Are, etc.)
-    if (block.type === 'heading') {
-      const headingText = block.children ? block.children.map(c => c.text).join('') : '';
-      
-      if (inSection) html += `</div>`; // Close previous card
-      html += `<div class="sub-card"><h4><strong>${headingText}</strong></h4>`;
-      inSection = true;
-    } 
-    // 2. Process Paragraphs & Bold Inline Labels
-    else if (block.type === 'paragraph' && block.children) {
-      let paragraphContent = '';
-
-      block.children.forEach(child => {
-        let text = child.text || '';
-
-        // Bold any text marked bold in Strapi OR auto-bold prefix before a colon (e.g. "Core Programming Logic:")
-        if (child.bold) {
-          paragraphContent += `<strong>${text}</strong>`;
-        } else if (text.includes(':')) {
-          const parts = text.split(':');
-          paragraphContent += `<strong>${parts[0]}:</strong>${parts.slice(1).join(':')}`;
-        } else {
-          paragraphContent += text;
-        }
-      });
-
-      if (paragraphContent.trim()) {
-        if (!inSection) {
-          html += `<div class="sub-card">`;
-          inSection = true;
-        }
-        html += `<p>${paragraphContent}</p>`;
-      }
-    }
-  });
-
-  if (inSection) html += `</div>`;
-
-  return html;
-}
-    // 2. Render Text Fields
-    if (document.getElementById('about-title') && data.Title) {
-      document.getElementById('about-title').innerText = data.Title;
-    }
-    
-    if (document.getElementById('about-subtitle') && data.Subtitle) {
-      document.getElementById('about-subtitle').innerText = data.Subtitle;
-    }
-
-    if (document.getElementById('about-story') && data.Hero_Story) {
-      document.getElementById('about-story').innerHTML = parseBlocksToHTML(data.Hero_Story);
-    }
-
-    if (document.getElementById('about-mission') && data.Our_Mission) {
-      document.getElementById('about-mission').innerHTML = parseBlocksToHTML(data.Our_Mission);
-    }
-
-    // 3. Image extraction
-    const imgElement = document.getElementById('about-image');
-    if (imgElement && data.Cover_Image) {
-      const cover = Array.isArray(data.Cover_Image) ? data.Cover_Image[0] : data.Cover_Image;
-      const relativeUrl = cover.url || (cover.data && cover.data.attributes ? cover.data.attributes.url : null);
-
-      if (relativeUrl) {
-        imgElement.src = `http://localhost:1337${relativeUrl}`;
-        imgElement.style.display = 'block';
-      }
-    }
-  })
-  .catch(err => console.error('Error loading Strapi data:', err));

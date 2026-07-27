@@ -1,5 +1,5 @@
 // 1. Define the API URL with your laptop's Wi-Fi IP address
-const API_URL = "http://192.168.137.1:1337/api/about-page?populate=*";
+onst API_URL = "http://192.168.137.1:1337/api/about-page?populate=*";
 
 // 2. Helper function to parse Strapi Rich Text Blocks into styled HTML sub-cards
 function parseBlocksToHTML(blocks) {

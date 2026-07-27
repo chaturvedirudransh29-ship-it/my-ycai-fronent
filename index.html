@@ -388,6 +388,37 @@
   font-size: 1.025rem;
   margin-bottom: 0.85rem;
 }
+       /* Responsive Styles for Mobile Screens */
+@media screen and (max-width: 768px) {
+  /* Navigation Container */
+  nav, .nav-links, .header-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 15px;
+    padding: 10px;
+  }
+
+  /* Navigation Links */
+  nav a, .nav-links a {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+
+  /* Main Title Header */
+  header h1, .logo {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  /* Main Card Spacing on Mobile */
+  .about-card, .sub-card {
+    padding: 1rem;
+    margin: 10px;
+  }
+}
     </style>
     
 </head>

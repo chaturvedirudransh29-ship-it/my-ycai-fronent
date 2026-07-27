@@ -418,6 +418,39 @@
     padding: 1rem;
     margin: 10px;
   }
+}/* Fix header container layout */
+header, .header, nav {
+  position: relative;
+  width: 100%;
+  padding: 15px 10px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+/* Align Nav items neatly on mobile */
+.nav-links, nav ul, nav div {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 8px 12px !important;
+  padding: 0 !important;
+  margin: 10px 0 0 0 !important;
+}
+
+/* Nav Link Buttons */
+nav a, .nav-links a {
+  font-size: 0.825rem !important;
+  padding: 4px 8px !important;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Prevent Header overlap onto main container */
+main, .container, #about-section, .about-card {
+  margin-top: 10px !important;
+  position: relative;
+  z-index: 1;
 }
     </style>
     

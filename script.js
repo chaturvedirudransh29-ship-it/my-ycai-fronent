@@ -1,4 +1,24 @@
-fetch('http://localhost:1337/api/about-page?populate=*')
+fetch('http://localhost:1337/api/about-page?populate
+      // 1. Define the API URL with your laptop's Wi-Fi IP address
+const API_URL = "http://192.168.137.1:1337/api/about-page?populate=*";
+
+// 2. Load the About Page content
+async function loadAboutPage() {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error("Network response was not ok");
+
+    const data = await response.json();
+    
+    // ... your code to render the data goes here ...
+    
+  } catch (error) {
+    console.error("Error fetching About page data:", error);
+  }
+}
+
+// Call function on load
+document.addEventListener("DOMContentLoaded", loadAboutPage);
   .then(res => res.json())
   .then(response => {
     const data = response.data;
